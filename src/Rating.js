@@ -1,77 +1,70 @@
 import React, { useState } from "react";
-import checked from "./media/checked.png";
-import unchecked from "./media/unchecked.png";
+import checked from "./media/checked2.png";
+import unchecked from "./media/unchecked2.png";
 import Stack from "@mui/material/Stack";
-import { Button, Tooltip, Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import { Box } from "@mui/material";
 
 export default function MyRating(params) {
-  var value = 2;
-  var title = "Test";
-  var size = 4;
-  var text = ["texte 1", "texte 2", "texte 3", "texte 4"];
-  var name = "test";
-  const onChange = () => {};
+  const { value, title, text, label, onChange } = params;
 
+  let correctValue = parseInt(value ?? 0); 
+
+  var size = text.length;
   var initialStatus = [];
   for (let i = 0; i < size; i++) {
-    initialStatus.push(i === value ? true : false);
+    initialStatus.push(i === correctValue - 1 ? true : false);
   }
   const [status, setStatus] = useState(initialStatus);
-  const [bottomText, setBottomText] = useState(text[value ?? 0]);
-  const [realBottomText, setRealBottomText] = useState(text[value] ?? 0);
+  const [bottomText, setBottomText] = useState(
+    text?.[correctValue - 1] ?? "Fais un choix"
+  );
+  const [realBottomText, setRealBottomText] = useState(
+    text?.[correctValue - 1] ?? "Fais un choix"
+  );
 
   return (
-    <>
+    <Box>
       <Typography
-        sx={{ paddingTop: "10px", paddingBottom: "10px", fontSize: "16px" }}
+        variant="h6"
+        sx={{ paddingTop: "20px", paddingBottom: "5px" }}
       >
         {title}
       </Typography>
 
-      <Stack direction="row" alignItems="center" spacing={0.5}>
-        <Typography
-          variant="body1"
-          sx={{ paddingRight: "10px", verticalAlign: "center" }}
-        >
-          {text[0]}
-        </Typography>
-
+      <Stack direction="row" alignItems="center" spacing={0}>
         {status.map((oneStatus, index) => (
-          <>
-            <img
-              src={oneStatus ? checked : unchecked}
-              key={name + "_" + index}
-              alt=""
-              style={{
-                height: "20px",
-                width: "20px",
-              }}
-              onClick={() => {
-                onChange(index);
-                setStatus((prevStatus) =>
-                  prevStatus.map((value, pos) => (index === pos ? true : false))
-                );
-                setBottomText(text[index]);
-                setRealBottomText(text[index]);
-              }}
-              onMouseOver={() => setBottomText(text[index])}
-              onMouseOut={() => setBottomText(realBottomText)}
-            />
-          </>
+          <img
+            src={oneStatus ? checked : unchecked}
+            key={label + "_" + index}
+            alt=""
+            style={{
+              height: "25px",
+              width: "25px",
+            }}
+            onClick={() => {
+              onChange(label, index + 1);
+              setStatus((prevStatus) =>
+                prevStatus.map((value, pos) => (index === pos ? true : false))
+              );
+              setBottomText(text[index]);
+              setRealBottomText(text[index]);
+            }}
+            onMouseOver={() => setBottomText(text[index])}
+            onMouseOut={() => setBottomText(realBottomText)}
+          />
         ))}
 
         <Typography
           variant="body1"
-          sx={{ paddingLeft: "10px", verticalAlign: "center" }}
+          sx={{
+            paddingLeft: "10px",
+            color: "text.secondary",
+          }}
         >
-          {text[size - 1]}
+          {bottomText}
         </Typography>
       </Stack>
-      <Typography
-        sx={{ paddingTop: "5px", paddingBottom: "10px", fontSize: "12px", fontStyle:  "italic" }}
-      >
-        {bottomText}
-      </Typography>
-    </>
+    </Box>
   );
 }

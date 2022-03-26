@@ -1,14 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import Stack from "@mui/material/Stack";
-import {
-  Typography,
-  Rating,
-  Grid,
-  TextField,
-  Button,
-  Checkbox,
-} from "@mui/material";
+import { Typography, Grid, TextField, Button } from "@mui/material";
+import Chip from "./Chip";
 import { getApiData, saveData } from "./apiData";
 import AdapterMoment from "@mui/lab/AdapterMoment";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
@@ -17,7 +11,10 @@ import moment from "moment";
 import "moment/min/locales.min";
 import awsmobile from "./aws-exports";
 import { Amplify, Auth, Hub } from "aws-amplify";
-import MyRating from "./Rating";
+import Rating from "./Rating";
+import Toolbar from "./Toolbar";
+import Drawer from "./Drawer";
+import { Box } from "@mui/system";
 
 moment.locale("fr-FR");
 
@@ -60,6 +57,15 @@ export default function App() {
   const [formData, setFormData] = useState();
   const [dateMomentForm, setDateMomentForm] = useState(moment());
   const [user, setUser] = useState(null);
+  const [drawerVisibile, setDrawerVisible] = React.useState(false);
+
+  const toggleDrawer = () => {
+    setDrawerVisible(!drawerVisibile);
+  };
+
+  const onItemClick = (title) => () => {
+    toggleDrawer();
+  };
 
   useEffect(() => {
     Hub.listen("auth", ({ payload: { event, data } }) => {
@@ -100,159 +106,168 @@ export default function App() {
     );
   }, [data, dateMomentForm]);
 
+  const textRating = {
+    humeur: ["Déprimé", "Pas trop le moral", "Cool", "Optimiste", "Euphorie"],
+    energie: [
+      "Au fond du canapé",
+      "Du mal à se motiver",
+      "Cool",
+      "La pêche !",
+      "Prêt à refaire le monde",
+    ],
+    pensees: [
+      "Au ralenti",
+      "Pas trop vif",
+      "Normal",
+      "Assez rapide",
+      "Dans tous les sens",
+    ],
+  };
+
+  const changeHandlerData = (label, newValue) => {
+    setData(saveData(data, label, dateMomentForm, formData, newValue));
+  };
+
   function RatingEtat(params) {
     const { label, title } = params;
     return (
-      <>
-        <Typography sx={{ paddingTop: "10px", fontSize: "16px" }}>
-          {title}
-        </Typography>
-        <Rating
-          value={parseInt(formData?.[label] ?? 0)}
-          onChange={(e) => {
-            setData(
-              saveData(data, label, dateMomentForm, formData, e.target.value)
-            );
-          }}
-          sx={{ paddingBottom: "10px" }}
-        />
-      </>
+      <Rating
+        value={formData?.[label]}
+        onChange={changeHandlerData}
+        text={textRating[label]}
+        title={title}
+        label={label}
+      />
     );
   }
 
   function CheckEtat(params) {
     const { label, title } = params;
     return (
-      <Grid item xs={12} sm={6} md={4} lg={3}>
-        <Stack
-          direction="row"
-          justifyContent="center"
-          alignItems="center"
-          spacing={0.5}
-        >
-          <Checkbox
-            checked={formData?.[label] || false}
-            onChange={(e) => {
-              setData(
-                saveData(
-                  data,
-                  label,
-                  dateMomentForm,
-                  formData,
-                  e.target.checked
-                )
-              );
-            }}
-          />
-          <Typography sx={{ fontSize: "16px" }}>{title}</Typography>
-        </Stack>
-      </Grid>
+      <Chip
+        title={title}
+        value={formData?.[label]}
+        onChange={changeHandlerData}
+        label={label}
+      />
     );
   }
 
   return (
     <>
-      {user ? (
-        <Stack>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => Auth.signOut()}
-          >
-            Déconnexion
-          </Button>
-        </Stack>
-      ) : (
-        <Button
-          variant="secondary"
-          color="primary"
-          onClick={() => Auth.federatedSignIn()}
-        >
-          Authentification
-        </Button>
-      )}
-
+      <Toolbar
+        title="SUIVI DE L'HUMEUR"
+        onMenuClick={toggleDrawer}
+        connected={user}
+      />
       {user && (
-        <Stack
-          spacing={0}
-          direction="column"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Typography
-            variant="h5"
-            sx={{ paddingTop: "20px", paddingBottom: "20px" }}
-          >
-            Suivi de l'humeur
-          </Typography>
-          <LocalizationProvider dateAdapter={AdapterMoment} locale="fr-FR">
-            <DatePicker
-              id="date-picker"
-              label="Date"
-              value={dateMomentForm}
-              okLabel="Valider"
-              cancelLabel="Annuler"
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  sx={{ paddingBottom: "10px" }}
-                  helperText={null}
-                />
-              )}
-              onChange={(value) => {
-                setDateMomentForm(value);
-              }}
-            />
-          </LocalizationProvider>
-          <RatingEtat title="Humeur" label="humeur" />
-          <RatingEtat title="Energie" label="energie" />
-          <RatingEtat title="Angoisse" label="angoisse" />
-
+        <>
+          <Drawer
+            open={drawerVisibile}
+            onClose={toggleDrawer}
+            onItemClick={onItemClick}
+          />
           <Grid
             container
-            direction="row"
-            justifyContent="center"
+            spacing={0}
+            direction="column"
             alignItems="center"
+            justifyContent="center"
           >
-            <CheckEtat title="Envie de tout plaquer" label="plaquer" />
-            <CheckEtat title="Agressivité" label="agressif" />
-            <CheckEtat title="Pensées rapides" label="pensees" />
-            <CheckEtat title="Idées noires" label="suicide" />
+            <Stack
+              spacing={0}
+              direction="column"
+              justifyContent="center"
+              alignItems="flex-start"
+              sx={{ paddingLeft: "20px", paddingRight: "20px" }}
+            >
+              <Box>
+                <Typography
+                  variant="h6"
+                  sx={{ paddingTop: "20px", paddingBottom: "5px" }}
+                >
+                  Date
+                </Typography>
+                <LocalizationProvider
+                  dateAdapter={AdapterMoment}
+                  locale="fr-FR"
+                >
+                  <DatePicker
+                    id="date-picker"
+                    value={dateMomentForm}
+                    okLabel="Valider"
+                    cancelLabel="Annuler"
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        sx={{ paddingBottom: "10px" }}
+                        helperText={null}
+                      />
+                    )}
+                    onChange={(value) => {
+                      setDateMomentForm(value);
+                    }}
+                  />
+                </LocalizationProvider>
+              </Box>
+
+              <RatingEtat title="Humeur" label="humeur" />
+              <RatingEtat title="Energie" label="energie" />
+              <RatingEtat title="Pensées" label="pensees" />
+              <Stack>
+                <Typography
+                  variant="h6"
+                  sx={{ paddingTop: "20px", paddingBottom: "5px" }}
+                >
+                  Autres
+                </Typography>
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                  sx={{ flexGrow: 1, maxWidth: "400px" }}
+                >
+                  <CheckEtat title="Envie de tout plaquer" label="plaquer" />
+                  <CheckEtat title="Agressivité" label="agressif" />
+                  <CheckEtat title="Idées noires" label="suicide" />
+                  <CheckEtat title="Angoisses" label="angoisse" />
+                </Grid>
+              </Stack>
+
+              <Typography
+                variant="h5"
+                sx={{ paddingTop: "20px", paddingBottom: "20px" }}
+              ></Typography>
+
+              <Stack
+                spacing={1}
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    setDateMomentForm(dateMomentForm.clone().add(-1, "days"));
+                  }}
+                >
+                  &lt;&lt;
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    setDateMomentForm(dateMomentForm.clone().add(1, "days"));
+                  }}
+                >
+                  &gt;&gt;
+                </Button>
+              </Stack>
+            </Stack>
           </Grid>
-
-          <Typography
-            variant="h5"
-            sx={{ paddingTop: "20px", paddingBottom: "20px" }}
-          ></Typography>
-
-          <MyRating />
-
-          <Stack
-            spacing={1}
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                setDateMomentForm(dateMomentForm.clone().add(-1, "days"));
-              }}
-            >
-              &lt;&lt;
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                setDateMomentForm(dateMomentForm.clone().add(1, "days"));
-              }}
-            >
-              &gt;&gt;
-            </Button>
-          </Stack>
-        </Stack>
+        </>
       )}
     </>
   );

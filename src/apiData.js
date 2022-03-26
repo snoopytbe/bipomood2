@@ -1,11 +1,18 @@
 import axios from "axios";
 import moment from "moment";
 import "moment/min/locales.min";
+import { URL } from "./urlAPI";
 moment.locale("fr-FR");
 
 const MomentToString = "YYYY-MM-DD";
-const URL = "https://ffwu2ay9sf.execute-api.eu-west-1.amazonaws.com/";
-const listLabels = ["humeur", "angoisse", "energie", "plaquer", "agressif","pensees","suicide"];
+const listLabels = [
+  "humeur",
+  "energie",
+  "plaquer",
+  "agressif",
+  "pensees",
+  "suicide",
+];
 
 export function getApiData() {
   return axios
@@ -66,10 +73,11 @@ export function saveData(data, label, dateMomentForm, formData, value) {
     date: dateMomentForm.format(MomentToString),
     id: id,
   };
+  console.log(JSON.stringify(formData));
   newData = listLabels.reduce(
     (prev, act) => ({
       ...prev,
-      [act]: label === act ? value : formData[act] ?? 0,
+      [act]: label === act ? value : formData?.[act] ?? 0,
     }),
     newData
   );
