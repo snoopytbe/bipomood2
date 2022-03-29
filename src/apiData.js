@@ -7,12 +7,47 @@ moment.locale("fr-FR");
 const MomentToString = "YYYY-MM-DD";
 const listLabels = [
   "humeur",
+  "angoisse",
   "energie",
   "plaquer",
   "agressif",
   "pensees",
   "suicide",
+  "achats",
+  "bavard",
+  "retrait",
 ];
+
+export const listTitle = {
+  humeur: "Humeur",
+  angoisse: "Angoisse",
+  energie: "Energie",
+  plaquer: "Envie de tout plaquer",
+  agressif: "Agressivité",
+  pensees: "Pensées",
+  suicide: "Idées noires",
+  achats: "Envies d'achat",
+  bavard: "Très bavard",
+  retrait: "Besoin de s'isoler",
+};
+
+export const textRating = {
+  humeur: ["Déprimé", "Pas trop le moral", "Cool", "Optimiste", "Euphorie"],
+  energie: [
+    "Au fond du canapé",
+    "Du mal à se motiver",
+    "Cool",
+    "La pêche !",
+    "Prêt à refaire le monde",
+  ],
+  pensees: [
+    "Au ralenti",
+    "Pas trop vif",
+    "Normal",
+    "Assez rapide",
+    "Dans tous les sens",
+  ],
+};
 
 export function getApiData() {
   return axios

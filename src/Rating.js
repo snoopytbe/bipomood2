@@ -8,7 +8,7 @@ import { Box } from "@mui/material";
 export default function MyRating(params) {
   const { value, title, text, label, onChange } = params;
 
-  let correctValue = parseInt(value ?? 0); 
+  let correctValue = parseInt(value ?? 0);
 
   var size = text.length;
   var initialStatus = [];
@@ -16,10 +16,10 @@ export default function MyRating(params) {
     initialStatus.push(i === correctValue - 1 ? true : false);
   }
   const [status, setStatus] = useState(initialStatus);
-  const [bottomText, setBottomText] = useState(
+  const [sideText, setSideText] = useState(
     text?.[correctValue - 1] ?? "Fais un choix"
   );
-  const [realBottomText, setRealBottomText] = useState(
+  const [realSideText, setRealSideText] = useState(
     text?.[correctValue - 1] ?? "Fais un choix"
   );
 
@@ -47,11 +47,11 @@ export default function MyRating(params) {
               setStatus((prevStatus) =>
                 prevStatus.map((value, pos) => (index === pos ? true : false))
               );
-              setBottomText(text[index]);
-              setRealBottomText(text[index]);
+              setSideText(text[index]);
+              setRealSideText(text[index]);
             }}
-            onMouseOver={() => setBottomText(text[index])}
-            onMouseOut={() => setBottomText(realBottomText)}
+            onMouseOver={() => setSideText(text[index])}
+            onMouseOut={() => setSideText(realSideText)}
           />
         ))}
 
@@ -62,7 +62,7 @@ export default function MyRating(params) {
             color: "text.secondary",
           }}
         >
-          {bottomText}
+          {sideText}
         </Typography>
       </Stack>
     </Box>
