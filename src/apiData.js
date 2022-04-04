@@ -4,7 +4,8 @@ import "moment/min/locales.min";
 import { URL } from "./urlAPI";
 moment.locale("fr-FR");
 
-const MomentToString = "YYYY-MM-DD";
+export const MomentToString = "YYYY-MM-DD";
+
 const listLabels = [
   "humeur",
   "angoisse",
@@ -16,6 +17,7 @@ const listLabels = [
   "achats",
   "bavard",
   "retrait",
+  "malade",
 ];
 
 export const listTitle = {
@@ -29,6 +31,7 @@ export const listTitle = {
   achats: "Envies d'achat",
   bavard: "Très bavard",
   retrait: "Besoin de s'isoler",
+  malade: "Malade",
 };
 
 export const textRating = {
@@ -100,6 +103,20 @@ function uuidv4() {
 }
 
 export function saveData(data, label, dateMomentForm, formData, value) {
+  console.log("Sauvegarde");
+  console.log(formData);
+  console.log(dateMomentForm.format(MomentToString));
+  console.log(
+    data.filter(
+      (oneData) => oneData.date === dateMomentForm.format(MomentToString)
+    )?.[0]?.id
+  );
+  if (
+    data.filter(
+      (oneData) => oneData.date === dateMomentForm.format(MomentToString)
+    )?.[0]?.id === undefined
+  )
+    alert("Problème éventuel lors de la sauvegarde");
   let id =
     data.filter(
       (oneData) => oneData.date === dateMomentForm.format(MomentToString)
@@ -108,7 +125,6 @@ export function saveData(data, label, dateMomentForm, formData, value) {
     date: dateMomentForm.format(MomentToString),
     id: id,
   };
-  console.log(JSON.stringify(formData));
   newData = listLabels.reduce(
     (prev, act) => ({
       ...prev,

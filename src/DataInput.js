@@ -19,7 +19,7 @@ export default function DataInput(params) {
 
   const [formData, setFormData] = useState();
   const [dateMomentForm, setDateMomentForm] = useState(moment());
-
+    
   useEffect(() => {
     setFormData(
       data?.find((item) => item.date === dateMomentForm.format(MomentToString))
@@ -112,6 +112,7 @@ export default function DataInput(params) {
             <SaisieEtat label="achats" type="Chip" />
             <SaisieEtat label="bavard" type="Chip" />
             <SaisieEtat label="retrait" type="Chip" />
+            <SaisieEtat label="malade" type="Chip"/>
           </Grid>
 
           <Typography

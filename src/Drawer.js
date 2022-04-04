@@ -11,7 +11,7 @@ import {
   Switch,
   useHistory,
 } from "react-router-dom";
-import Graph from "./Graph";
+import Graph from "./Graph3";
 import DataInput from "./DataInput";
 
 export default function MyDrawer({ open, onClose, onItemClick }) {
