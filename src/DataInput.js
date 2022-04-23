@@ -112,7 +112,8 @@ export default function DataInput(params) {
             <SaisieEtat label="achats" type="Chip" />
             <SaisieEtat label="bavard" type="Chip" />
             <SaisieEtat label="retrait" type="Chip" />
-            <SaisieEtat label="malade" type="Chip"/>
+            <SaisieEtat label="malade" type="Chip" />
+            <SaisieEtat label="cynique" type="Chip" />
           </Grid>
 
           <Typography

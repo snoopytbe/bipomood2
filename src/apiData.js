@@ -18,6 +18,7 @@ const listLabels = [
   "bavard",
   "retrait",
   "malade",
+  "cynique",
 ];
 
 export const listTitle = {
@@ -32,6 +33,7 @@ export const listTitle = {
   bavard: "Très bavard",
   retrait: "Besoin de s'isoler",
   malade: "Malade",
+  cynique: "Cynique",
 };
 
 export const textRating = {
