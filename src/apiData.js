@@ -19,6 +19,7 @@ const listLabels = [
   "retrait",
   "malade",
   "cynique",
+  "vivre",
 ];
 
 export const listTitle = {
@@ -34,6 +35,7 @@ export const listTitle = {
   retrait: "Besoin de s'isoler",
   malade: "Malade",
   cynique: "Cynique",
+  vivre: "Joie de vivre",
 };
 
 export const textRating = {
@@ -51,6 +53,13 @@ export const textRating = {
     "Normal",
     "Assez rapide",
     "Dans tous les sens",
+  ],
+  vivre: [
+    "Idées noires",
+    "Si seulement...",
+    "Normal",
+    "La vie est belle",
+    "J'adore la vie",
   ],
 };
 

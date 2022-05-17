@@ -32,7 +32,7 @@ export default function Graph(params) {
         pushed.date = oneDay.toDate();
         pushed[value] = foundValue;
         pushed.tooltipText =
-          listTitle[value] + " : " + textRating[value][foundValue];
+          listTitle[value] + " : " + textRating[value][foundValue - 1];
         result.push(pushed);
       }
     }
@@ -50,8 +50,8 @@ export default function Graph(params) {
     );
 
     var graphData = [];
-    var listOfData = ["humeur", "energie", "pensees"];
-    var listOfColors = ["tomato", "blue", "green"];
+    var listOfData = ["humeur", "energie", "pensees", "vivre"];
+    var listOfColors = ["tomato", "blue", "green", "black"];
 
     listOfData.forEach((value) => graphData.push(getValue(value)));
 

@@ -27,7 +27,7 @@ export default function MyRating(params) {
     <Box>
       <Typography
         variant="h6"
-        sx={{ paddingTop: "20px", paddingBottom: "5px" }}
+        sx={{ paddingTop: "10px", paddingBottom: "5px" }}
       >
         {title}
       </Typography>

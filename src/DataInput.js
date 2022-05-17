@@ -64,7 +64,7 @@ export default function DataInput(params) {
           <Box>
             <Typography
               variant="h6"
-              sx={{ paddingTop: "20px", paddingBottom: "5px" }}
+              sx={{ paddingTop: "10px", paddingBottom: "5px" }}
             >
               Date
             </Typography>
@@ -77,7 +77,7 @@ export default function DataInput(params) {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    sx={{ paddingBottom: "10px" }}
+                    sx={{ paddingBottom: "0px" }}
                     helperText={null}
                   />
                 )}
@@ -91,10 +91,11 @@ export default function DataInput(params) {
           <SaisieEtat label="humeur" type="Rating" />
           <SaisieEtat label="energie" type="Rating" />
           <SaisieEtat label="pensees" type="Rating" />
+          <SaisieEtat label="vivre" type="Rating" />
 
           <Typography
             variant="h6"
-            sx={{ paddingTop: "20px", paddingBottom: "5px" }}
+            sx={{ paddingTop: "10px", paddingBottom: "5px" }}
           >
             Autres
           </Typography>
