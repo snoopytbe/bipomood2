@@ -20,6 +20,7 @@ const listLabels = [
   "malade",
   "cynique",
   "vivre",
+  "rumination",
 ];
 
 export const listTitle = {
@@ -36,6 +37,7 @@ export const listTitle = {
   malade: "Malade",
   cynique: "Cynique",
   vivre: "Joie de vivre",
+  rumination: "Rumination",
 };
 
 export const textRating = {
@@ -55,11 +57,11 @@ export const textRating = {
     "Dans tous les sens",
   ],
   vivre: [
-    "Idées noires",
-    "Si seulement...",
-    "Normal",
-    "La vie est belle",
-    "J'adore la vie",
+    "La vie est insupportable",
+    "Quelques idées noires",
+    "Si seulement je ne me réveillais pas",
+    "Ca va bien",
+    "La vie est belle !",
   ],
 };
 

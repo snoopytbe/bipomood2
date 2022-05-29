@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
-import { Typography, Grid, TextField, Button } from "@mui/material";
+import { Typography, Grid, TextField, Button, rgbToHex } from "@mui/material";
 import Chip from "./Chip";
 import AdapterMoment from "@mui/lab/AdapterMoment";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
 import { saveData, textRating, listTitle } from "./apiData";
+import { HiddenEasterEgg } from "react-hidden-easter-egg";
 import Rating from "./Rating";
 import moment from "moment";
 import "moment/min/locales.min";
@@ -19,7 +20,8 @@ export default function DataInput(params) {
 
   const [formData, setFormData] = useState();
   const [dateMomentForm, setDateMomentForm] = useState(moment());
-    
+  const [modeDemo, setModeDemo] = useState(true);
+
   useEffect(() => {
     setFormData(
       data?.find((item) => item.date === dateMomentForm.format(MomentToString))
@@ -47,6 +49,17 @@ export default function DataInput(params) {
 
   return (
     <>
+      <HiddenEasterEgg
+        code={["d", "e", "m", "o"]}
+        cb={() => setModeDemo((modeDemo) => !modeDemo)}
+        key="easterKB"
+      />
+      <HiddenEasterEgg
+        code={[1, 1, 1]}
+        key="easterMOB"
+        cb={() => setModeDemo((modeDemo) => !modeDemo)}
+        codeMode="MOBILE_CLICK"
+      />
       <Grid
         container
         spacing={0}
@@ -66,8 +79,11 @@ export default function DataInput(params) {
               variant="h6"
               sx={{ paddingTop: "10px", paddingBottom: "5px" }}
             >
-              Date
+              {`Date${
+                dateMomentForm.isSame(moment(), "day") ? " - Aujourd'hui" : ""
+              }`}
             </Typography>
+
             <LocalizationProvider dateAdapter={AdapterMoment} locale="fr-FR">
               <DatePicker
                 id="date-picker"
@@ -91,7 +107,7 @@ export default function DataInput(params) {
           <SaisieEtat label="humeur" type="Rating" />
           <SaisieEtat label="energie" type="Rating" />
           <SaisieEtat label="pensees" type="Rating" />
-          <SaisieEtat label="vivre" type="Rating" />
+          {modeDemo && <SaisieEtat label="vivre" type="Rating" />}
 
           <Typography
             variant="h6"
@@ -108,13 +124,14 @@ export default function DataInput(params) {
           >
             <SaisieEtat label="plaquer" type="Chip" />
             <SaisieEtat label="agressif" type="Chip" />
-            <SaisieEtat label="suicide" type="Chip" />
+            {modeDemo && <SaisieEtat label="suicide" type="Chip" />}
             <SaisieEtat label="angoisse" type="Chip" />
             <SaisieEtat label="achats" type="Chip" />
             <SaisieEtat label="bavard" type="Chip" />
             <SaisieEtat label="retrait" type="Chip" />
             <SaisieEtat label="malade" type="Chip" />
             <SaisieEtat label="cynique" type="Chip" />
+            <SaisieEtat label="rumination" type="Chip" />
           </Grid>
 
           <Typography
